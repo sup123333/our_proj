@@ -67,6 +67,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             if (timestamps.size() >= maxRequests) {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(objectMapper.writeValueAsString(
                         new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS.value(),
                                 "Слишком много попыток, попробуйте позже")));

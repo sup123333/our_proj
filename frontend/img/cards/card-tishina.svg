@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900">
+  <defs>
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#caa253"/>
+      <stop offset="14%" stop-color="#e3c275"/>
+      <stop offset="42%" stop-color="#f3e0ab"/>
+      <stop offset="58%" stop-color="#f3e0ab"/>
+      <stop offset="86%" stop-color="#e3c275"/>
+      <stop offset="100%" stop-color="#caa253"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="600" height="900" fill="#140a05"/>
+  <rect x="26" y="26" width="548" height="848" fill="url(#panelGrad)"/>
+  <rect x="34" y="34" width="532" height="832" fill="none" stroke="#b8893a" stroke-width="1.6"/>
+  <rect x="41" y="41" width="518" height="818" fill="none" stroke="#b8893a" stroke-width="0.8" opacity="0.75"/>
+  <text x="300" y="118" text-anchor="middle" font-size="42" font-weight="700" letter-spacing="4" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">ТИШИНА</text>
+
+  
+  <g stroke="#b8893a" fill="#b8893a">
+    <line x1="80" y1="176" x2="268" y2="176" stroke-width="1"/>
+    <line x1="332" y1="176" x2="520" y2="176" stroke-width="1"/>
+    <circle cx="278" cy="176" r="2.6" fill="#b8893a" stroke="none"/>
+    <circle cx="322" cy="176" r="2.6" fill="#b8893a" stroke="none"/>
+    <path d="M300,168 L308,176 L300,184 L292,176 Z" fill="#b8893a" stroke="none"/>
+  </g>
+  
+  <g transform="translate(300,256) scale(1)">
+    <g fill="none" stroke="#1c1008" stroke-width="2.2" stroke-linejoin="round">
+      <path d="M0,-6 C -8,-40 -55,-58 -68,-30 C -78,-8 -55,10 -20,2 C -10,0 -2,-2 0,-6 Z"/>
+      <path d="M0,-6 C 8,-40 55,-58 68,-30 C 78,-8 55,10 20,2 C 10,0 2,-2 0,-6 Z"/>
+      <path d="M0,4 C -6,18 -38,32 -50,18 C -58,8 -45,-2 -18,0 C -8,1 -2,2 0,4 Z"/>
+      <path d="M0,4 C 6,18 38,32 50,18 C 58,8 45,-2 18,0 C 8,1 2,2 0,4 Z"/>
+    </g>
+    <ellipse cx="0" cy="-2" rx="4" ry="30" fill="#1c1008"/>
+    <g fill="none" stroke="#1c1008" stroke-width="1.5">
+      <path d="M-2,-30 C -10,-50 -16,-58 -22,-66"/>
+      <path d="M2,-30 C 10,-50 16,-58 22,-66"/>
+    </g>
+    <circle cx="-22" cy="-66" r="2.2" fill="#1c1008"/>
+    <circle cx="22" cy="-66" r="2.2" fill="#1c1008"/>
+  </g>
+  <text x="158" y="467" text-anchor="end" font-size="22" fill="#b8893a" font-family="Georgia,'Times New Roman',serif" letter-spacing="0.5">I.</text>
+<text x="172" y="467" font-size="24" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">его истинное отношение к вам</text>
+<text x="158" y="501" text-anchor="end" font-size="22" fill="#b8893a" font-family="Georgia,'Times New Roman',serif" letter-spacing="0.5">II.</text>
+<text x="172" y="501" font-size="24" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">причины тишины</text>
+<text x="158" y="535" text-anchor="end" font-size="22" fill="#b8893a" font-family="Georgia,'Times New Roman',serif" letter-spacing="0.5">III.</text>
+<text x="172" y="535" font-size="24" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">стоит ли вам делать первый шаг</text>
+<text x="158" y="569" text-anchor="end" font-size="22" fill="#b8893a" font-family="Georgia,'Times New Roman',serif" letter-spacing="0.5">IV.</text>
+<text x="172" y="569" font-size="24" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">чего он хочет от отношений</text>
+<text x="158" y="603" text-anchor="end" font-size="22" fill="#b8893a" font-family="Georgia,'Times New Roman',serif" letter-spacing="0.5">V.</text>
+<text x="172" y="603" font-size="24" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">перспективы</text>
+<text x="172" y="637" font-size="18" font-style="italic" fill="#6b4a22" font-family="Georgia,'Times New Roman',serif">(2 недели — 3 месяца)</text>
+<text x="158" y="671" text-anchor="end" font-size="22" fill="#b8893a" font-family="Georgia,'Times New Roman',serif" letter-spacing="0.5">VI.</text>
+<text x="172" y="671" font-size="24" fill="#1c1008" font-family="Georgia,'Times New Roman',serif">совет</text>
+
+  <text x="300" y="812" text-anchor="middle" font-size="16" font-style="italic" letter-spacing="1" fill="#6b4a22" opacity="0.55" font-family="Georgia,'Times New Roman',serif">@wiiexq</text>
+  <circle cx="300" cy="850" r="34" fill="#140a05" stroke="#b8893a" stroke-width="2"/>
+  <circle cx="300" cy="850" r="28" fill="none" stroke="#d4a855" stroke-width="0.8"/>
+  <text x="300" y="857" text-anchor="middle" font-size="18" font-weight="700" fill="#d4a855" letter-spacing="1" font-family="Georgia,'Times New Roman',serif">VI</text>
+</svg>

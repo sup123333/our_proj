@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .accessDeniedHandler(restAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/index.html", "/img/**", "/favicon.ico").permitAll() // статический лендинг
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("GET", "/api/services").permitAll() // публичный список услуг
                         .requestMatchers("POST", "/api/leads").permitAll() // публичная форма записи с лендинга

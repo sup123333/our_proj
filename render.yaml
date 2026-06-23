@@ -1,0 +1,42 @@
+databases:
+  - name: viktoria-tarot-db
+    databaseName: tarot_db
+    user: tarot_user
+    plan: free
+
+services:
+  - type: web
+    name: viktoria-tarot
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: viktoria-tarot-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: viktoria-tarot-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: viktoria-tarot-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: viktoria-tarot-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: viktoria-tarot-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: tarot@example.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://viktoria-tarot.onrender.com
+      - key: DDL_AUTO
+        value: update

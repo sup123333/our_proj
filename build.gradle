@@ -40,3 +40,9 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+processResources {
+    from('frontend') {
+        into 'static'
+    }
+}
