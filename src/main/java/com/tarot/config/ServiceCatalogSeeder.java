@@ -35,6 +35,12 @@ public class ServiceCatalogSeeder implements CommandLineRunner {
                 Service.builder().name("Расклад на 3 вопроса")
                         .description("Три вопроса в одном сеансе — самый полный разбор твоей ситуации.")
                         .price(new BigDecimal("500.00")).pointsReward(10).active(true).build(),
+                Service.builder().name("Расклад на 5 вопросов")
+                        .description("Пакет из пяти вопросов — выгоднее, чем по одному. Действует скидка за объём на темах с карточек.")
+                        .price(new BigDecimal("1000.00")).pointsReward(20).active(true).build(),
+                Service.builder().name("Расклад на 7 вопросов")
+                        .description("Большой разбор на семь вопросов — максимальная скидка за объём на темах с карточек.")
+                        .price(new BigDecimal("1500.00")).pointsReward(30).active(true).build(),
                 Service.builder().name("Матрица судьбы — любой 1 личный вопрос")
                         .description("Разбор твоей матрицы судьбы с акцентом на один вопрос, который важен сейчас.")
                         .price(new BigDecimal("500.00")).pointsReward(10).active(true).build()

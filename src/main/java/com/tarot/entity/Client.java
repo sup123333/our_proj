@@ -16,8 +16,9 @@ public class Client {
     @Column(nullable = false)
     private String name;
 
+    // Логин — нормализованный телефон или telegram (без email: клиент его не запомнит)
     @Column(nullable = false, unique = true)
-    private String email;
+    private String contact;
 
     @Column(nullable = false)
     private String password;

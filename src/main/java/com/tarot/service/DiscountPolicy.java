@@ -7,5 +7,6 @@ import java.math.BigDecimal;
 // Стратегия расчёта скидки — новое правило скидки = новая реализация, без изменения вызывающего кода (OCP).
 public interface DiscountPolicy {
 
-    BigDecimal calculateDiscount(Client client, BigDecimal price);
+    // ownQuestion: true — клиент задаёт свой вопрос вместо темы из подобранных карточек ("её карточки").
+    BigDecimal calculateDiscount(Client client, BigDecimal price, boolean ownQuestion);
 }

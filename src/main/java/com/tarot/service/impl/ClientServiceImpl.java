@@ -16,8 +16,8 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     @Override
-    public Client getByEmail(String email) {
-        return clientRepository.findByEmail(normalize(email))
+    public Client getByContact(String contact) {
+        return clientRepository.findByContact(contact)
                 .orElseThrow(() -> new ResourceNotFoundException("Клиент не найден"));
     }
 
@@ -30,9 +30,5 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> getAll() {
         return clientRepository.findAll();
-    }
-
-    private String normalize(String email) {
-        return email.trim().toLowerCase();
     }
 }

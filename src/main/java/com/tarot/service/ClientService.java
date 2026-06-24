@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ClientService {
 
-    Client getByEmail(String email);
+    Client getByContact(String contact);
 
     Client getById(Long id);
 

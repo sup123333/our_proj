@@ -13,6 +13,9 @@ public record SessionCreateRequest(
         @Size(max = 2000)
         String question,
 
-        boolean usePoints
+        boolean usePoints,
+
+        // true — свой вопрос вместо темы из подобранных карточек, без скидки за объём
+        boolean ownQuestion
 ) {
 }

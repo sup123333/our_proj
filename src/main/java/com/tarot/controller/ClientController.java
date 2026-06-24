@@ -22,7 +22,7 @@ public class ClientController {
 
     @GetMapping("/clients/me")
     public ClientResponse me() {
-        return clientMapper.toResponse(clientService.getByEmail(SecurityUtils.currentEmail()));
+        return clientMapper.toResponse(clientService.getByContact(SecurityUtils.currentContact()));
     }
 
     @GetMapping("/admin/clients")

@@ -27,9 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final ClientRepository clientRepository;
 
-    // Email таролога — задаётся в application.properties
-    @Value("${admin.email}")
-    private String adminEmail;
+    // Контакт (телефон/telegram) таролога — задаётся в application.properties
+    @Value("${admin.contact}")
+    private String adminContact;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -60,17 +60,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String email = jwtService.extractEmail(token);
-        var clientOpt = clientRepository.findByEmail(email);
+        String contact = jwtService.extractContact(token);
+        var clientOpt = clientRepository.findByContact(contact);
         if (clientOpt.isEmpty()) {
             return;
         }
 
-        List<SimpleGrantedAuthority> authorities = email.equalsIgnoreCase(adminEmail)
+        List<SimpleGrantedAuthority> authorities = contact.equalsIgnoreCase(adminContact)
                 ? List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"))
                 : List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
-        var auth = new UsernamePasswordAuthenticationToken(email, null, authorities);
+        var auth = new UsernamePasswordAuthenticationToken(contact, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }

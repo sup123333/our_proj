@@ -32,6 +32,18 @@ public class Session {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal finalPrice; // price - discountApplied
 
+    // true — клиент задаёт свой вопрос вместо темы из подобранных карточек ("её карточки");
+    // на своих вопросах не действует автоматическая скидка за объём.
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean ownQuestion = false;
+
+    // discountApplied может включать и объёмную скидку, и скидку за баллы —
+    // баллы реально списываются при оплате только если эта часть скидки не нулевая.
+    @Column(nullable = false, precision = 10, scale = 2)
+    @Builder.Default
+    private BigDecimal pointsDiscountApplied = BigDecimal.ZERO;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default

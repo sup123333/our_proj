@@ -15,6 +15,7 @@ public class SessionMapper {
                 session.getService().getId(),
                 session.getService().getName(),
                 session.getPrice(),
+                session.getOwnQuestion(),
                 session.getDiscountApplied(),
                 session.getFinalPrice(),
                 session.getStatus(),

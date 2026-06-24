@@ -28,15 +28,15 @@ public class SessionController {
     public ResponseEntity<SessionResponse> create(@Valid @RequestBody SessionCreateRequest request) {
         // clientId никогда не берётся из request body — только из аутентифицированного principal,
         // иначе клиент мог бы создавать сеансы от имени чужого аккаунта (IDOR).
-        Client client = clientService.getByEmail(SecurityUtils.currentEmail());
+        Client client = clientService.getByContact(SecurityUtils.currentContact());
         var session = sessionService.createSession(
-                client.getId(), request.serviceId(), request.question(), request.usePoints());
+                client.getId(), request.serviceId(), request.question(), request.usePoints(), request.ownQuestion());
         return ResponseEntity.status(HttpStatus.CREATED).body(sessionMapper.toResponse(session));
     }
 
     @GetMapping("/api/sessions/me")
     public List<SessionResponse> mySessions() {
-        Client client = clientService.getByEmail(SecurityUtils.currentEmail());
+        Client client = clientService.getByContact(SecurityUtils.currentContact());
         return sessionService.getClientSessions(client.getId()).stream().map(sessionMapper::toResponse).toList();
     }
 

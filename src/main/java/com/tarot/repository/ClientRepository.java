@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    Optional<Client> findByEmail(String email);
+    Optional<Client> findByContact(String contact);
 
     @Query("select count(c) from Client c where c.createdAt between :from and :to")
     long countNewClients(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);

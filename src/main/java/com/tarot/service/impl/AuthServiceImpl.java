@@ -4,7 +4,8 @@ import com.tarot.dto.auth.AuthResponse;
 import com.tarot.dto.auth.LoginRequest;
 import com.tarot.dto.auth.RegisterRequest;
 import com.tarot.entity.Client;
-import com.tarot.exception.DuplicateEmailException;
+import com.tarot.exception.BadRequestException;
+import com.tarot.exception.DuplicateContactException;
 import com.tarot.exception.InvalidCredentialsException;
 import com.tarot.repository.ClientRepository;
 import com.tarot.security.JwtService;
@@ -25,42 +26,60 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        String email = normalize(request.email());
-        if (clientRepository.findByEmail(email).isPresent()) {
-            throw new DuplicateEmailException(email);
+        String phone = blankToNull(request.phone());
+        String telegram = blankToNull(request.telegram());
+        if (phone == null && telegram == null) {
+            throw new BadRequestException("Укажи телефон или telegram, чтобы с тобой можно было связаться");
+        }
+        String contact = normalizeContact(phone != null ? phone : telegram);
+        if (clientRepository.findByContact(contact).isPresent()) {
+            throw new DuplicateContactException(contact);
         }
 
         Client client = Client.builder()
                 .name(request.name())
-                .email(email)
+                .contact(contact)
                 .password(passwordEncoder.encode(request.password()))
-                .phone(request.phone())
-                .telegram(request.telegram())
+                .phone(phone)
+                .telegram(telegram)
                 .build();
         clientRepository.save(client);
 
-        return issueToken(email);
+        return issueToken(contact);
     }
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        String email = normalize(request.email());
-        Client client = clientRepository.findByEmail(email)
+        String contact = normalizeContact(request.contact());
+        Client client = clientRepository.findByContact(contact)
                 .orElseThrow(InvalidCredentialsException::new);
 
         if (!passwordEncoder.matches(request.password(), client.getPassword())) {
             throw new InvalidCredentialsException();
         }
 
-        return issueToken(email);
+        return issueToken(contact);
     }
 
-    private AuthResponse issueToken(String email) {
-        String token = jwtService.generateToken(email);
+    private AuthResponse issueToken(String contact) {
+        String token = jwtService.generateToken(contact);
         return new AuthResponse(token, jwtService.getExpirationMs());
     }
 
-    private String normalize(String email) {
-        return email.trim().toLowerCase();
+    private String blankToNull(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        return value.trim();
+    }
+
+    // Телефон сводим к цифрам (+код), telegram — к нижнему регистру без @, чтобы один и тот же
+    // контакт не давал разные написания при регистрации и входе.
+    private String normalizeContact(String raw) {
+        String trimmed = raw.trim();
+        if (trimmed.matches("^[+\\d][\\d\\s()-]{3,}$")) {
+            return trimmed.replaceAll("[^+\\d]", "");
+        }
+        return trimmed.toLowerCase().replaceFirst("^@", "");
     }
 }

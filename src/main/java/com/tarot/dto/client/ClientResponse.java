@@ -8,11 +8,12 @@ import java.time.LocalDateTime;
 public record ClientResponse(
         Long id,
         String name,
-        String email,
+        String contact,
         String phone,
         String telegram,
         Client.ClientStatus status,
         Integer totalPoints,
+        Long sessionsCount,
         LocalDateTime createdAt,
         LocalDateTime lastSessionAt
 ) {

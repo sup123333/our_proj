@@ -9,7 +9,6 @@ import com.tarot.repository.ClientRepository;
 import com.tarot.repository.ServiceRepository;
 import com.tarot.repository.SessionRepository;
 import com.tarot.service.ClientStatusService;
-import com.tarot.service.DiscountPolicy;
 import com.tarot.service.PointsLedgerService;
 import com.tarot.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -27,28 +26,34 @@ public class SessionServiceImpl implements SessionService {
     private final ServiceRepository serviceRepository;
     private final ClientRepository clientRepository;
     private final PointsLedgerService pointsLedgerService;
-    private final DiscountPolicy discountPolicy;
+    private final VolumeDiscountPolicy volumeDiscountPolicy;
+    private final PointsDiscountPolicy pointsDiscountPolicy;
     private final ClientStatusService clientStatusService;
     private final LoyaltyProperties loyaltyProperties;
 
     @Override
     @Transactional
-    public Session createSession(Long clientId, Long serviceId, String question, boolean usePoints) {
+    public Session createSession(Long clientId, Long serviceId, String question, boolean usePoints, boolean ownQuestion) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Клиент не найден"));
         Service service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Услуга не найдена"));
 
-        BigDecimal discount = usePoints
-                ? discountPolicy.calculateDiscount(client, service.getPrice())
+        BigDecimal price = service.getPrice();
+        BigDecimal volumeDiscount = volumeDiscountPolicy.calculateDiscount(client, price, ownQuestion);
+        BigDecimal pointsDiscount = usePoints
+                ? pointsDiscountPolicy.calculateDiscount(client, price, ownQuestion)
                 : BigDecimal.ZERO;
+        BigDecimal totalDiscount = volumeDiscount.add(pointsDiscount).min(price);
 
         Session session = Session.builder()
                 .client(client)
                 .service(service)
-                .price(service.getPrice())
-                .discountApplied(discount)
-                .finalPrice(service.getPrice().subtract(discount))
+                .price(price)
+                .ownQuestion(ownQuestion)
+                .discountApplied(totalDiscount)
+                .pointsDiscountApplied(pointsDiscount)
+                .finalPrice(price.subtract(totalDiscount))
                 .clientQuestion(question)
                 .build();
 
@@ -64,7 +69,7 @@ public class SessionServiceImpl implements SessionService {
         session.setStatus(Session.SessionStatus.PAID);
         session.setPaidAt(LocalDateTime.now());
 
-        if (session.getDiscountApplied().compareTo(BigDecimal.ZERO) > 0) {
+        if (session.getPointsDiscountApplied().compareTo(BigDecimal.ZERO) > 0) {
             pointsLedgerService.spendPoints(session.getClient(), session, loyaltyProperties.getPointsForDiscount());
         }
 

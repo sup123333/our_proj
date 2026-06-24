@@ -35,16 +35,16 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String contact) {
         return Jwts.builder()
-                .subject(email)
+                .subject(contact)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(getKey())
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public String extractContact(String token) {
         return Jwts.parser()
                 .verifyWith(getKey())
                 .build()
@@ -55,7 +55,7 @@ public class JwtService {
 
     public boolean isValid(String token) {
         try {
-            extractEmail(token);
+            extractContact(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
