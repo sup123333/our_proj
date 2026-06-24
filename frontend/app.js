@@ -241,17 +241,17 @@ function formatPrice(p){return Math.round(p).toLocaleString('ru-RU')+' ₽';}
 // serviceName выбирает пакет вопросов из каталога — у каждой темы своё количество вопросов,
 // поэтому и цена на карточке у них разная (не у всех одинаковая "1 вопрос · 200 ₽").
 const TOPICS=[
-  {name:'Наши отношения',img:'img/cards/card-otnosheniya.svg',serviceName:'Расклад на 2 вопроса'},
-  {name:'Ждать или отпустить',img:'img/cards/card-zhdat-ili-otpustit.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Интрижка',img:'img/cards/card-intrizhka.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Будущий партнёр',img:'img/cards/card-budushiy-partner.svg',serviceName:'Расклад на 2 вопроса'},
-  {name:'Как вас видят мужчины?',img:'img/cards/card-kak-vidyat-muzhchiny.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Тюбик',img:'img/cards/card-tyubik.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Моя точка G',img:'img/cards/card-tochka-g.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Чего он хочет в постели?',img:'img/cards/card-chego-on-hochet.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Анализ сна',img:'img/cards/card-analiz-sna.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Тишина',img:'img/cards/card-tishina.svg',serviceName:'Расклад на 1 вопрос'},
-  {name:'Дружба или любовь',img:'img/cards/card-druzhba-ili-lyubov.svg',serviceName:'Расклад на 2 вопроса'},
+  {name:'Наши отношения',img:'img/cards/card-otnosheniya.svg',serviceName:'Расклад на 7 вопросов'},
+  {name:'Ждать или отпустить',img:'img/cards/card-zhdat-ili-otpustit.svg',serviceName:'Расклад на 4 вопроса'},
+  {name:'Интрижка',img:'img/cards/card-intrizhka.svg',serviceName:'Расклад на 5 вопросов'},
+  {name:'Будущий партнёр',img:'img/cards/card-budushiy-partner.svg',serviceName:'Расклад на 4 вопроса'},
+  {name:'Как вас видят мужчины?',img:'img/cards/card-kak-vidyat-muzhchiny.svg',serviceName:'Расклад на 6 вопросов'},
+  {name:'Тюбик',img:'img/cards/card-tyubik.svg',serviceName:'Расклад на 5 вопросов'},
+  {name:'Моя точка G',img:'img/cards/card-tochka-g.svg',serviceName:'Расклад на 5 вопросов'},
+  {name:'Чего он хочет в постели?',img:'img/cards/card-chego-on-hochet.svg',serviceName:'Расклад на 4 вопроса'},
+  {name:'Анализ сна',img:'img/cards/card-analiz-sna.svg',serviceName:'Расклад на 4 вопроса'},
+  {name:'Тишина',img:'img/cards/card-tishina.svg',serviceName:'Расклад на 6 вопросов'},
+  {name:'Дружба или любовь',img:'img/cards/card-druzhba-ili-lyubov.svg',serviceName:'Расклад на 6 вопросов'},
   {name:'Травма отношения',img:'img/cards/card-travma-otnosheniya.svg',serviceName:'Расклад на 3 вопроса'}
 ];
 
