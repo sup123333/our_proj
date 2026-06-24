@@ -238,28 +238,32 @@ const servicesReady=fetch('/api/services').then(r=>r.json()).then(list=>{
 function formatPrice(p){return Math.round(p).toLocaleString('ru-RU')+' ₽';}
 
 // КАРТЫ-ПОДСКАЗКИ: ПЕРЕТАСКИВАНИЕ ТЕМЫ В ПОЛЕ ЗАКАЗА
+// serviceName выбирает пакет вопросов из каталога — у каждой темы своё количество вопросов,
+// поэтому и цена на карточке у них разная (не у всех одинаковая "1 вопрос · 200 ₽").
 const TOPICS=[
-  {name:'Наши отношения',img:'img/cards/card-otnosheniya.svg'},
-  {name:'Ждать или отпустить',img:'img/cards/card-zhdat-ili-otpustit.svg'},
-  {name:'Интрижка',img:'img/cards/card-intrizhka.svg'},
-  {name:'Будущий партнёр',img:'img/cards/card-budushiy-partner.svg'},
-  {name:'Как вас видят мужчины?',img:'img/cards/card-kak-vidyat-muzhchiny.svg'},
-  {name:'Тюбик',img:'img/cards/card-tyubik.svg'},
-  {name:'Моя точка G',img:'img/cards/card-tochka-g.svg'},
-  {name:'Чего он хочет в постели?',img:'img/cards/card-chego-on-hochet.svg'},
-  {name:'Анализ сна',img:'img/cards/card-analiz-sna.svg'},
-  {name:'Тишина',img:'img/cards/card-tishina.svg'},
-  {name:'Дружба или любовь',img:'img/cards/card-druzhba-ili-lyubov.svg'},
-  {name:'Травма отношения',img:'img/cards/card-travma-otnosheniya.svg'}
+  {name:'Наши отношения',img:'img/cards/card-otnosheniya.svg',serviceName:'Расклад на 2 вопроса'},
+  {name:'Ждать или отпустить',img:'img/cards/card-zhdat-ili-otpustit.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Интрижка',img:'img/cards/card-intrizhka.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Будущий партнёр',img:'img/cards/card-budushiy-partner.svg',serviceName:'Расклад на 2 вопроса'},
+  {name:'Как вас видят мужчины?',img:'img/cards/card-kak-vidyat-muzhchiny.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Тюбик',img:'img/cards/card-tyubik.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Моя точка G',img:'img/cards/card-tochka-g.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Чего он хочет в постели?',img:'img/cards/card-chego-on-hochet.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Анализ сна',img:'img/cards/card-analiz-sna.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Тишина',img:'img/cards/card-tishina.svg',serviceName:'Расклад на 1 вопрос'},
+  {name:'Дружба или любовь',img:'img/cards/card-druzhba-ili-lyubov.svg',serviceName:'Расклад на 2 вопроса'},
+  {name:'Травма отношения',img:'img/cards/card-travma-otnosheniya.svg',serviceName:'Расклад на 3 вопроса'}
 ];
 
 function initTopicPicker(){
   const deck=document.getElementById('pickerDeck');
   if(!deck||deck.dataset.ready) return;
   deck.dataset.ready='1';
-  deck.innerHTML=TOPICS.map(t=>
-    `<div class="picker-card" draggable="true" data-topic="${t.name}"><img src="${t.img}" alt="${t.name}"/><span>${t.name}</span></div>`
-  ).join('');
+  deck.innerHTML=TOPICS.map(t=>{
+    const svc=SERVICES.find(s=>s.name===t.serviceName);
+    const price=svc?` · ${formatPrice(svc.price)}`:'';
+    return `<div class="picker-card" draggable="true" data-topic="${t.name}"><img src="${t.img}" alt="${t.name}"/><span>${t.name}${price}</span></div>`;
+  }).join('');
   deck.querySelectorAll('.picker-card').forEach(card=>{
     card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',card.dataset.topic);card.classList.add('dragging');});
     card.addEventListener('dragend',()=>card.classList.remove('dragging'));
@@ -279,12 +283,13 @@ function selectTopicCard(name){
   const topic=TOPICS.find(t=>t.name===name);
   if(!topic) return;
   document.querySelectorAll('.picker-card').forEach(c=>c.classList.toggle('placed',c.dataset.topic===name));
-  const svc=SERVICES.find(s=>s.name==='Расклад на 1 вопрос');
+  const svc=SERVICES.find(s=>s.name===topic.serviceName);
   if(svc) document.getElementById('serviceSelect').value=svc.id;
   document.getElementById('questionField').value='Тема: '+name;
   const drop=document.getElementById('pickerDrop');
   drop.classList.add('filled');
-  drop.innerHTML=`<div class="picker-drop-card"><img src="${topic.img}" alt="${name}"/></div><span>${name}</span><button type="button" class="picker-clear" onclick="clearPicker()">Очистить</button>`;
+  const priceLabel=svc?` · ${formatPrice(svc.price)}`:'';
+  drop.innerHTML=`<div class="picker-drop-card"><img src="${topic.img}" alt="${name}"/></div><span>${name}${priceLabel}</span><button type="button" class="picker-clear" onclick="clearPicker()">Очистить</button>`;
 }
 
 function clearPicker(){
