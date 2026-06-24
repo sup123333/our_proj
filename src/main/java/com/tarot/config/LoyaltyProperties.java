@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "loyalty")
 public class LoyaltyProperties {
 
+    // Имя каталожной услуги для "своего вопроса" — её цена в каталоге трактуется как цена за один вопрос.
+    public static final String OWN_QUESTION_SERVICE_NAME = "Свой вопрос";
+
     private int pointsPerSession = 10;
     private int pointsForDiscount = 50;
     private int discountPercent = 15;

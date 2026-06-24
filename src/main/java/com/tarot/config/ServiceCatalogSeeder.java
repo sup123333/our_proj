@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 
-// Лендинг показывает фиксированный набор услуг — при первом запуске на пустой базе
-// заводим те же услуги, чтобы у формы записи были реальные serviceId для брони.
+// Лендинг показывает фиксированный набор услуг, для которых форма записи должна получить
+// реальные serviceId. Каждая услуга добавляется по имени независимо от того, пуста ли таблица —
+// иначе пакеты, добавленные в каталог позже, никогда не появятся на уже работающей базе.
 @Component
 @RequiredArgsConstructor
 public class ServiceCatalogSeeder implements CommandLineRunner {
@@ -19,10 +20,7 @@ public class ServiceCatalogSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (serviceRepository.count() > 0) {
-            return;
-        }
-        serviceRepository.saveAll(List.of(
+        List.of(
                 Service.builder().name("Консультация (40 минут)")
                         .description("Личный разговор без расклада — отвечаю на вопросы голосом или в переписке.")
                         .price(new BigDecimal("500.00")).pointsReward(10).active(true).build(),
@@ -43,7 +41,17 @@ public class ServiceCatalogSeeder implements CommandLineRunner {
                         .price(new BigDecimal("1500.00")).pointsReward(30).active(true).build(),
                 Service.builder().name("Матрица судьбы — любой 1 личный вопрос")
                         .description("Разбор твоей матрицы судьбы с акцентом на один вопрос, который важен сейчас.")
-                        .price(new BigDecimal("500.00")).pointsReward(10).active(true).build()
-        ));
+                        .price(new BigDecimal("500.00")).pointsReward(10).active(true).build(),
+                Service.builder().name(LoyaltyProperties.OWN_QUESTION_SERVICE_NAME)
+                        .description("Свой вопрос вместо темы с карточек сайта — цена считается по количеству вопросов, без скидки за объём.")
+                        .price(new BigDecimal("220.00")).pointsReward(10).active(true).build()
+        ).forEach(this::ensureExists);
+    }
+
+    private void ensureExists(Service template) {
+        if (serviceRepository.findByName(template.getName()).isPresent()) {
+            return;
+        }
+        serviceRepository.save(template);
     }
 }

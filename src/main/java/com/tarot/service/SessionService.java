@@ -7,7 +7,8 @@ import java.util.List;
 public interface SessionService {
 
     // clientId должен быть получен вызывающим кодом из аутентифицированного principal, а не из тела запроса.
-    Session createSession(Long clientId, Long serviceId, String question, boolean usePoints, boolean ownQuestion);
+    Session createSession(Long clientId, Long serviceId, Integer questionCount, String question,
+                           boolean usePoints, boolean ownQuestion);
 
     Session markAsPaid(Long sessionId);
 

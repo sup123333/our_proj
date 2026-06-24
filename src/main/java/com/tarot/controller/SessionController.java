@@ -30,7 +30,8 @@ public class SessionController {
         // иначе клиент мог бы создавать сеансы от имени чужого аккаунта (IDOR).
         Client client = clientService.getByContact(SecurityUtils.currentContact());
         var session = sessionService.createSession(
-                client.getId(), request.serviceId(), request.question(), request.usePoints(), request.ownQuestion());
+                client.getId(), request.serviceId(), request.questionCount(), request.question(),
+                request.usePoints(), request.ownQuestion());
         return ResponseEntity.status(HttpStatus.CREATED).body(sessionMapper.toResponse(session));
     }
 

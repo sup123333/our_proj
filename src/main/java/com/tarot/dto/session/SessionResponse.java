@@ -13,6 +13,7 @@ public record SessionResponse(
         String serviceName,
         BigDecimal price,
         Boolean ownQuestion,
+        Integer questionCount,
         BigDecimal discountApplied,
         BigDecimal finalPrice,
         Session.SessionStatus status,

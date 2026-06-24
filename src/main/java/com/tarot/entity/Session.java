@@ -38,6 +38,10 @@ public class Session {
     @Builder.Default
     private Boolean ownQuestion = false;
 
+    // Сколько вопросов оплачено — заполняется только при ownQuestion=true,
+    // цена в этом случае считается как service.price (цена за один вопрос) * questionCount.
+    private Integer questionCount;
+
     // discountApplied может включать и объёмную скидку, и скидку за баллы —
     // баллы реально списываются при оплате только если эта часть скидки не нулевая.
     @Column(nullable = false, precision = 10, scale = 2)

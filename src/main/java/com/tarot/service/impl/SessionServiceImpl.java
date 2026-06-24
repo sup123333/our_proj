@@ -4,6 +4,7 @@ import com.tarot.config.LoyaltyProperties;
 import com.tarot.entity.Client;
 import com.tarot.entity.Service;
 import com.tarot.entity.Session;
+import com.tarot.exception.BadRequestException;
 import com.tarot.exception.ResourceNotFoundException;
 import com.tarot.repository.ClientRepository;
 import com.tarot.repository.ServiceRepository;
@@ -22,6 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
+    private static final int MAX_OWN_QUESTIONS = 20;
+
     private final SessionRepository sessionRepository;
     private final ServiceRepository serviceRepository;
     private final ClientRepository clientRepository;
@@ -33,13 +36,29 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     @Transactional
-    public Session createSession(Long clientId, Long serviceId, String question, boolean usePoints, boolean ownQuestion) {
+    public Session createSession(Long clientId, Long serviceId, Integer questionCount, String question,
+                                  boolean usePoints, boolean ownQuestion) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Клиент не найден"));
-        Service service = serviceRepository.findById(serviceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Услуга не найдена"));
 
-        BigDecimal price = service.getPrice();
+        Service service;
+        BigDecimal price;
+        if (ownQuestion) {
+            if (questionCount == null || questionCount < 1 || questionCount > MAX_OWN_QUESTIONS) {
+                throw new BadRequestException("Укажи количество вопросов от 1 до " + MAX_OWN_QUESTIONS);
+            }
+            service = serviceRepository.findByName(LoyaltyProperties.OWN_QUESTION_SERVICE_NAME)
+                    .orElseThrow(() -> new ResourceNotFoundException("Услуга не найдена"));
+            price = service.getPrice().multiply(BigDecimal.valueOf(questionCount));
+        } else {
+            if (serviceId == null) {
+                throw new BadRequestException("Услуга обязательна");
+            }
+            service = serviceRepository.findById(serviceId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Услуга не найдена"));
+            price = service.getPrice();
+        }
+
         BigDecimal volumeDiscount = volumeDiscountPolicy.calculateDiscount(client, price, ownQuestion);
         BigDecimal pointsDiscount = usePoints
                 ? pointsDiscountPolicy.calculateDiscount(client, price, ownQuestion)
@@ -51,6 +70,7 @@ public class SessionServiceImpl implements SessionService {
                 .service(service)
                 .price(price)
                 .ownQuestion(ownQuestion)
+                .questionCount(ownQuestion ? questionCount : null)
                 .discountApplied(totalDiscount)
                 .pointsDiscountApplied(pointsDiscount)
                 .finalPrice(price.subtract(totalDiscount))
@@ -73,9 +93,10 @@ public class SessionServiceImpl implements SessionService {
             pointsLedgerService.spendPoints(session.getClient(), session, loyaltyProperties.getPointsForDiscount());
         }
 
-        int earned = session.getService().getPointsReward() > 0
+        int baseReward = session.getService().getPointsReward() > 0
                 ? session.getService().getPointsReward()
                 : loyaltyProperties.getPointsPerSession();
+        int earned = session.getQuestionCount() != null ? baseReward * session.getQuestionCount() : baseReward;
         session.setPointsEarned(earned);
         pointsLedgerService.awardPoints(session.getClient(), session, earned);
 

@@ -322,11 +322,23 @@ async function showBookingForm(){
   }catch(err){}
 }
 
+function ownQuestionPricePerQuestion(){
+  const svc=SERVICES.find(s=>s.name==='Свой вопрос');
+  return svc?svc.price:0;
+}
+
+function updateOwnQuestionPrice(){
+  const count=Math.max(1,Number(document.getElementById('questionCountField').value)||1);
+  const total=ownQuestionPricePerQuestion()*count;
+  document.getElementById('ownQuestionPrice').textContent=`Цена: ${formatPrice(total)} (${formatPrice(ownQuestionPricePerQuestion())} за вопрос)`;
+}
+document.getElementById('questionCountField').addEventListener('input',updateOwnQuestionPrice);
+
 function updateDiscountHint(){
   const own=document.getElementById('ownQuestion').checked;
   document.getElementById('topicPickerWrap').style.display=own?'none':'block';
-  document.getElementById('serviceSelectWrap').style.display=own?'block':'none';
-  if(own) clearPicker();
+  document.getElementById('ownQuestionWrap').style.display=own?'block':'none';
+  if(own){clearPicker();updateOwnQuestionPrice();}
   document.getElementById('ptsLabel').textContent=own
     ? 'Применить накопленные баллы (скидка 10% на свой вопрос)'
     : 'Применить накопленные баллы (скидка 15% на темы с карточек)';
@@ -340,16 +352,20 @@ async function submitSession(e){
   e.preventDefault();
   const msgEl=document.getElementById('formMessage');
   const btn=document.getElementById('submitBtn');
+  const own=document.getElementById('ownQuestion').checked;
   const serviceId=document.getElementById('serviceSelect').value;
+  const questionCount=Number(document.getElementById('questionCountField').value)||0;
   msgEl.style.color='#8c2f2f';
-  if(!serviceId){msgEl.textContent='Выбери услугу';return;}
+  if(own && questionCount<1){msgEl.textContent='Укажи количество вопросов';return;}
+  if(!own && !serviceId){msgEl.textContent='Выбери тему — перетащи карту в поле выше';return;}
   btn.disabled=true;
   try{
     const res=await fetch('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json',...authHeader()},body:JSON.stringify({
-      serviceId:Number(serviceId),
+      serviceId:own?null:Number(serviceId),
+      questionCount:own?questionCount:null,
       question:document.getElementById('questionField').value.trim(),
       usePoints:document.getElementById('pts').checked,
-      ownQuestion:document.getElementById('ownQuestion').checked
+      ownQuestion:own
     })});
     if(res.status===401){clearAuth();msgEl.textContent='Сессия истекла — войди ещё раз';btn.disabled=false;openAuthModal();return;}
     if(!res.ok){msgEl.textContent='Не получилось отправить заявку, попробуй позже';btn.disabled=false;return;}

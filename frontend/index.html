@@ -229,7 +229,12 @@
               <div class="picker-deck" id="pickerDeck"></div>
               <div class="picker-drop" id="pickerDrop">✦ Положи карту сюда, чтобы заказать ✦</div>
             </div>
-            <div class="form-field full" id="serviceSelectWrap" style="display:none"><label>Услуга</label><select id="serviceSelect"><option value="">— выбери расклад —</option></select></div>
+            <select id="serviceSelect" style="display:none"></select>
+            <div class="form-field full" id="ownQuestionWrap" style="display:none">
+              <label>Сколько вопросов?</label>
+              <input type="number" id="questionCountField" min="1" max="20" value="1"/>
+              <p class="picker-hint" id="ownQuestionPrice" style="text-align:left;margin:.3rem 0 0;"></p>
+            </div>
             <div class="form-field full"><label>Твой вопрос</label><textarea id="questionField" placeholder="Опиши ситуацию в нескольких словах..." rows="3"></textarea></div>
             <div class="form-field full"><div class="check-row"><input type="checkbox" id="pts"/><label for="pts" id="ptsLabel">Применить накопленные баллы (скидка 15%)</label></div></div>
             <p class="scroll-text" id="discountHint" style="font-size:.92rem;margin:0;text-align:left;max-width:none;">✦ На темах с карточек сайта от 1000 ₽ скидка за объём действует автоматически.</p>
