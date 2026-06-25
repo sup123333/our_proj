@@ -22,17 +22,23 @@ class VolumeDiscountPolicyTest {
     }
 
     @Test
-    void fifteenPercent_atFirstThreshold() {
+    void firstTierPercent_atFirstThreshold() {
         BigDecimal discount = policy.calculateDiscount(client, BigDecimal.valueOf(1000), false);
 
-        assertThat(discount).isEqualByComparingTo(BigDecimal.valueOf(150));
+        BigDecimal expected = BigDecimal.valueOf(1000)
+                .multiply(BigDecimal.valueOf(loyaltyProperties.getVolumePercent1()))
+                .divide(BigDecimal.valueOf(100));
+        assertThat(discount).isEqualByComparingTo(expected);
     }
 
     @Test
-    void twentyPercent_atSecondThreshold() {
+    void secondTierPercent_atSecondThreshold() {
         BigDecimal discount = policy.calculateDiscount(client, BigDecimal.valueOf(1500), false);
 
-        assertThat(discount).isEqualByComparingTo(BigDecimal.valueOf(300));
+        BigDecimal expected = BigDecimal.valueOf(1500)
+                .multiply(BigDecimal.valueOf(loyaltyProperties.getVolumePercent2()))
+                .divide(BigDecimal.valueOf(100));
+        assertThat(discount).isEqualByComparingTo(expected);
     }
 
     @Test
