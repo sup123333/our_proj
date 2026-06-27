@@ -22,7 +22,7 @@ public class ServiceCatalogSeeder implements CommandLineRunner {
     public void run(String... args) {
         List.of(
                 Service.builder().name("Консультация (40 минут)")
-                        .description("Личный разговор без расклада — отвечаю на вопросы голосом или в переписке.")
+                        .description("Личный разговор голосом или в переписке — в течение 40 минут любые вопросы, связанные с таро.")
                         .price(new BigDecimal("500.00")).pointsReward(10).active(true).build(),
                 Service.builder().name("Расклад на 1 вопрос")
                         .description("Один вопрос — развёрнутый ответ. Когда застряла и не видишь выхода.")
