@@ -224,7 +224,19 @@
         <div class="form-scroll reveal" id="bookingForm" style="display:none">
           <p class="scroll-text" id="bookingWelcome" style="margin-bottom:1rem;"></p>
           <form class="form-grid" id="sessionForm" onsubmit="submitSession(event)">
-            <div class="form-field full"><div class="check-row"><input type="checkbox" id="ownQuestion"/><label for="ownQuestion">Это мой собственный вопрос (не тема с карточек сайта)</label></div></div>
+            <div class="form-field full">
+              <label>Тип сеанса</label>
+              <div class="auth-tabs" style="margin-bottom:0">
+                <button type="button" class="auth-tab active" id="stBtnTarot" onclick="setSessionType('tarot')">✦ Таро-расклад</button>
+                <button type="button" class="auth-tab" id="stBtnMatrix" onclick="setSessionType('matrix')">✦ Матрица судьбы</button>
+              </div>
+            </div>
+            <div class="form-field full" id="dobWrap" style="display:none">
+              <label>Дата рождения</label>
+              <input type="date" id="dobField"/>
+              <p class="picker-hint" style="text-align:left;margin:.3rem 0 0;">Для расчёта матрицы — нужна полная дата: день, месяц, год</p>
+            </div>
+            <div class="form-field full" id="ownQuestionRow"><div class="check-row"><input type="checkbox" id="ownQuestion"/><label for="ownQuestion">Это мой собственный вопрос (не тема с карточек сайта)</label></div></div>
             <div class="form-field full" id="topicPickerWrap">
               <label>Выбери тему</label>
               <p class="picker-hint">Перетащи карту (или просто коснись), которая откликнулась, в поле ниже</p>
@@ -237,7 +249,7 @@
               <input type="number" id="questionCountField" min="1" max="20" value="1"/>
               <p class="picker-hint" id="ownQuestionPrice" style="text-align:left;margin:.3rem 0 0;"></p>
             </div>
-            <div class="form-field full"><label>Твой вопрос</label><textarea id="questionField" placeholder="Опиши ситуацию в нескольких словах..." rows="3"></textarea></div>
+            <div class="form-field full"><label id="questionFieldLabel">Твой вопрос</label><textarea id="questionField" placeholder="Опиши ситуацию в нескольких словах..." rows="3"></textarea></div>
             <div class="form-field full">
               <div class="check-row">
                 <input type="checkbox" id="agree-oferta" required/>

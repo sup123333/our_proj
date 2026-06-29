@@ -127,45 +127,25 @@ async function refreshNavAuth(){
   }catch(err){}
 }
 
-// ОТЗЫВЫ: ГЕНЕРАЦИЯ БОЛЬШОЙ КОЛЛЕКЦИИ + ПОКАЗАТЬ ЕЩЁ
-const REVIEW_NAMES=['Мария','Алёна','Татьяна','Светлана','Ирина','Ольга','Наталья','Анна','Екатерина','Юлия','Виктория','Дарья','Ксения','Полина','Алина','Маргарита','Елена','Кристина','Софья','Вера','Любовь','Надежда','Жанна','Инна','Лариса','Галина','Валентина','Зоя','Антонина','Тамара'];
-const REVIEW_OPENINGS=['Шла на сеанс с большим скепсисом, но','Уже не первый раз обращаюсь, и каждый раз','Подруга посоветовала, и я не пожалела —','Долго не решалась, а зря тянула —','Заказала расклад в сложный период жизни, и','Не ожидала, что всё будет настолько в точку:','Первый раз пробовала такое, и','Обратилась почти случайно, и','Сомневалась до последнего, но','Записалась под впечатлением от отзывов, и'];
-const REVIEW_MIDDLES=['карты очень точно отразили мою ситуацию.','Виктория объяснила всё спокойно и по делу, без лишней мистики.','получила чёткие ответы на то, что давно мучило.','ушла с ощущением, что наконец всё разложила по полочкам.','было непросто услышать правду, но это оказалось именно то, что нужно.','расклад помог увидеть ситуацию с неожиданной стороны.','всё совпало гораздо точнее, чем я думала.','наконец перестала крутить одни и те же мысли по кругу.','получила конкретный план, а не общие слова.'];
-const REVIEW_ENDINGS=['Буду обращаться ещё.','Очень рекомендую.','Спасибо огромное за поддержку и честность.','Теперь это моя традиция перед важными решениями.','Чувствую себя увереннее после разговора.','Однозначно стоит своих денег.','Уже записалась на следующий расклад.','Сохранила контакт — обращусь, если понадобится.'];
-const TOPIC_TAGS=['Расклад на ситуацию','Расклад на отношения','Расклад на год','Расклад на карьеру','Расклад на 1 вопрос','Расклад на 3 вопроса','Расклад на 5 вопросов','Консультация'];
-const MATRIX_TAGS=['Матрица судьбы','Расчёт + разбор','Матрица судьбы на отношения','Матрица судьбы и деньги'];
-
-function ageWord(age){
-  const mod100=age%100, mod10=age%10;
-  if(mod100>=11&&mod100<=14) return 'лет';
-  if(mod10===1) return 'год';
-  if(mod10>=2&&mod10<=4) return 'года';
-  return 'лет';
-}
-
-function buildReviews(count, tags, seedOffset){
-  const list=[];
-  for(let i=0;i<count;i++){
-    const idx=i+seedOffset;
-    const name=REVIEW_NAMES[idx%REVIEW_NAMES.length];
-    const age=22+((idx*7)%11);
-    const opening=REVIEW_OPENINGS[idx%REVIEW_OPENINGS.length];
-    const middle=REVIEW_MIDDLES[(idx*3+1)%REVIEW_MIDDLES.length];
-    const ending=REVIEW_ENDINGS[(idx*5+2)%REVIEW_ENDINGS.length];
-    const tag=tags[(idx*2+3)%tags.length];
-    list.push({text:`${opening} ${middle} ${ending}`,author:`${name}, ${age} ${ageWord(age)}`,topic:tag});
-  }
-  return list;
-}
-
+// ОТЗЫВЫ: РЕАЛЬНЫЕ + ПОКАЗАТЬ ЕЩЁ
 const REVIEWS={
   topics:{
     all:[
-      {text:'Давно хотела попробовать таро, но боялась. У Виктории всё по-другому — мягко, без давления. Ушла с ощущением что всё поняла.',author:'Мария, 29 лет',topic:'Расклад на ситуацию'},
-      {text:'Обратилась по отношениям — была в растерянности. Расклад помог расставить всё по местам. Теперь хожу регулярно, уже третий раз.',author:'Алёна, 30 лет',topic:'Расклад на отношения'},
-      {text:'Расклад на год в январе — это моя традиция. Виктория объясняет глубоко и понятно, без воды.',author:'Татьяна, 27 лет',topic:'Расклад на год'},
-      {text:'Не верила в таро. Была поражена насколько точно карты отразили мою ситуацию. Теперь верю — и рекомендую.',author:'Светлана, 26 лет',topic:'Расклад на карьеру'},
-      ...buildReviews(64,TOPIC_TAGS,0)
+      {text:'у тебя очень точные расклады, а ещё — комфортное общение. это для меня немаловажно 🫶',author:'Клиентка',topic:'Расклад на отношения'},
+      {text:'Правдивые расклады, сработали на 100%. я прям удивлена, что всё было как она сказала',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'потрясена точностью — это правда похоже на него. и голос приятный, и ответ развёрнутый 🩷',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'до расклада была сильная тревожность. Виктория быстро разложила всё по полочкам — не пришлось долго ждать, как у некоторых тарологов. однозначно рекомендую 💋',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'мучилась долго с вопросом, теперь успокоилась. расклад очень похож на характер наших отношений, так что верю ❤',author:'Клиентка',topic:'Расклад на отношения'},
+      {text:'ответ пришёл в текстовом формате — очень удобно! чёткий, понятный, без лишней воды. спасибо огромное!!',author:'Клиентка',topic:'Расклад на 1 вопрос'},
+      {text:'за свою цену это оооочень оправдано! подробно и без воды. смело обращайтесь ❤️',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'обращаюсь уже второй раз — всё супер подробно. верю только этой милой девушке! 💗',author:'Клиентка',topic:'Расклад на отношения'},
+      {text:'расклад просто пушка! брала платный — цена что надо, конечно побольше закинула 😋',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'очень быстро и качественно, в голосовом формате — удобно. только самое важное, без лишнего 🫶',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'девушка расположила к себе, расклад шикарный, всë подробно. обращайтесь! 💗',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'всё быстро, чётко и понятно — умеет расписать и объяснить каждую карту 💖',author:'Клиентка',topic:'Расклад на 1 вопрос'},
+      {text:'меня интересовал один вопрос — сделала расклад очень быстро. буду обращаться ещё ❤️',author:'Клиентка',topic:'Расклад на 1 вопрос'},
+      {text:'вы мне очень сильно помогли! советую всем обращаться 💟',author:'Клиентка',topic:'Расклад на ситуацию'},
+      {text:'расклад понравился: всё подробно, написала значение каждой карты — это очень помогает для восприятия!',author:'Клиентка',topic:'Расклад на ситуацию'},
     ],
     shown:0
   },
@@ -174,7 +154,6 @@ const REVIEWS={
       {text:'Заказала матрицу из любопытства — а получила разбор, который объяснил вообще всю мою жизнь. Про деньги — особенно в точку.',author:'Ирина, 31 год',topic:'Матрица судьбы'},
       {text:'Долго не понимала, почему отношения идут по одному кругу. Матрица показала кармическую задачу — теперь хотя бы знаю, с чем работать.',author:'Ольга, 31 год',topic:'Матрица судьбы'},
       {text:'Сделала себе и дочке. Подробно, по делу, без эзотерической воды — прям как инструкция к себе.',author:'Наталья, 32 года',topic:'Матрица судьбы'},
-      ...buildReviews(57,MATRIX_TAGS,11)
     ],
     shown:0
   }
@@ -304,6 +283,30 @@ function clearPicker(){
 
 // ГЕЙТ ЗАПИСИ
 let pendingBooking=null;
+let currentSessionType='tarot';
+
+function setSessionType(type){
+  currentSessionType=type;
+  document.getElementById('stBtnTarot').classList.toggle('active',type==='tarot');
+  document.getElementById('stBtnMatrix').classList.toggle('active',type==='matrix');
+  const isMatrix=type==='matrix';
+  document.getElementById('dobWrap').style.display=isMatrix?'block':'none';
+  document.getElementById('ownQuestionRow').style.display=isMatrix?'none':'block';
+  document.getElementById('topicPickerWrap').style.display=isMatrix?'none':'block';
+  document.getElementById('ownQuestionWrap').style.display='none';
+  document.getElementById('questionFieldLabel').textContent=isMatrix?'На чём сделать акцент (необязательно)':'Твой вопрос';
+  document.getElementById('questionField').placeholder=isMatrix?'Например: деньги, отношения, предназначение...':'Опиши ситуацию в нескольких словах...';
+  if(isMatrix){
+    clearPicker();
+    document.getElementById('ownQuestion').checked=false;
+    servicesReady.then(()=>{
+      const svc=SERVICES.find(s=>s.name==='Матрица судьбы — любой 1 личный вопрос');
+      if(svc) document.getElementById('serviceSelect').value=svc.id;
+    });
+  }
+  updateDiscountHint();
+}
+
 function startBooking(){
   if(getAuth()) showBookingForm();
   else openAuthModal();
@@ -312,6 +315,7 @@ async function showBookingForm(){
   document.getElementById('bookingGate').style.display='none';
   document.getElementById('bookingForm').style.display='block';
   await servicesReady;
+  setSessionType('tarot');
   document.getElementById('ownQuestion').checked=false;
   if(pendingBooking){
     selectTopicCard(pendingBooking.topicName);
@@ -357,10 +361,34 @@ async function submitSession(e){
   e.preventDefault();
   const msgEl=document.getElementById('formMessage');
   const btn=document.getElementById('submitBtn');
+  msgEl.style.color='#8c2f2f';
+
+  if(currentSessionType==='matrix'){
+    const dob=document.getElementById('dobField').value;
+    if(!dob){msgEl.textContent='Укажи дату рождения';return;}
+    const svc=SERVICES.find(s=>s.name==='Матрица судьбы — любой 1 личный вопрос');
+    if(!svc){msgEl.textContent='Услуга не найдена, обновите страницу';return;}
+    btn.disabled=true;
+    const focusQ=document.getElementById('questionField').value.trim();
+    const composedQ=focusQ?`Дата рождения: ${dob}. ${focusQ}`:`Дата рождения: ${dob}`;
+    try{
+      const res=await fetch('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json',...authHeader()},body:JSON.stringify({
+        serviceId:svc.id,questionCount:null,question:composedQ,usePoints:document.getElementById('pts').checked,ownQuestion:false
+      })});
+      if(res.status===401){clearAuth();msgEl.textContent='Сессия истекла — войди ещё раз';btn.disabled=false;openAuthModal();return;}
+      if(!res.ok){msgEl.textContent='Не получилось отправить заявку, попробуй позже';btn.disabled=false;return;}
+      const data=await res.json();
+      msgEl.style.color='#2a1a08';
+      msgEl.textContent=`Заявка принята ✦ К оплате: ${formatPrice(data.finalPrice)}. Напишу в Telegram для подтверждения.`;
+      btn.textContent='Заявка отправлена ✦';
+      refreshNavAuth();
+    }catch(err){msgEl.textContent='Нет связи с сервером';btn.disabled=false;}
+    return;
+  }
+
   const own=document.getElementById('ownQuestion').checked;
   const serviceId=document.getElementById('serviceSelect').value;
   const questionCount=Number(document.getElementById('questionCountField').value)||0;
-  msgEl.style.color='#8c2f2f';
   if(own && questionCount<1){msgEl.textContent='Укажи количество вопросов';return;}
   if(!own && !serviceId){msgEl.textContent='Выбери тему — перетащи карту в поле выше';return;}
   btn.disabled=true;
